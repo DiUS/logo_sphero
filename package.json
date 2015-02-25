@@ -1,0 +1,8 @@
+{
+  "name": "logo-sphero",
+  "version": "0.0.0",
+  "dependencies": {},
+  "devDependencies": {
+    "cylon": "^0.22.1"
+  }
+}
