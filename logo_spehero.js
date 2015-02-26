@@ -7,24 +7,28 @@ var filename = process.argv[2];
 var instructionString, instructions;
 
 var Robot = { };
-Robot.FD = function(speed) {
-  console.log("FD @ "+ speed);
+Robot.FD = function(seconds) {
+  console.log("FD @ " + seconds);
 }
 
-Robot.BK = function(speed) {
-  console.log("BK @ "+ speed);
+Robot.BK = function(seconds) {
+  console.log("BK @ " + seconds);
 }
 
 Robot.LT = function(angle) {
-  console.log("LT @ "+ angle);
+  console.log("LT @ " + angle);
 }
 
 Robot.RT = function(angle) {
-  console.log("RT @ "+ angle);
+  console.log("RT @ " + angle);
+}
+
+Robot.SPEED = function(speed) {
+  console.log("SPEED @ " + speed);
 }
 
 function checkValidCommand(command) {
-  return ['FD', 'BK', 'RT', 'LT'].indexOf(command) > -1
+  return ['FD', 'BK', 'RT', 'LT', 'SPEED'].indexOf(command) > -1
 }
 
 function readFile(callback) {
