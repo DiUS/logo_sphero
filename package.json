@@ -4,6 +4,7 @@
   "dependencies": {},
   "devDependencies": {
     "cylon": "^0.22.1",
-    "cylon-sphero": "^0.18.0"
+    "cylon-sphero": "^0.18.0",
+    "cylon-api-http": "^0.1.1",
   }
 }
