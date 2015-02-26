@@ -2,8 +2,9 @@ var cylon = require('cylon');
 var api = cylon.api('http');
 var interval;
 var speed = 50;
-var direction = 0;
+var heading = 0;
 var moveInterval = 1;
+var spheroCommander = function() { console.log("please replace me, I am a default function") };
 
 module.exports = {
 	config: cylon.config({
@@ -14,7 +15,7 @@ module.exports = {
 	sphero: cylon.robot({
 		name: "sphero",
 		speed: 50,
-	
+
 	  connections: {
 	    sphero: { adaptor: 'sphero', port: '/dev/tty.Sphero-GBO-AMP-SPP' }
 	  },
@@ -23,9 +24,13 @@ module.exports = {
 	    sphero: { driver: 'sphero' }
 	  },
 	
+    setWorker: function(func) {
+      spheroCommander = func;
+    },
+
 	  work: function(my) {
 			console.log("working...")
-	    my.stop();
+	    //my.stop();
 	
 			my.sphero.on('connect', function() {
 	      console.log("Setting up Collision Detection...");
@@ -39,29 +44,35 @@ module.exports = {
 	      console.log("Collision:");
 	      console.log(data);
 	    });
+
+      spheroCommander();
 	  },
 	
 	  move: function(distance) {
+      distance = parseInt(distance);
 			console.log("moving...");
-	
-			var count = 0;
-			var sphero = this.devices.sphero;
-	
-		  interval = setInterval(function() {
-				sphero.roll(speed, heading);
-			  if (count >= distance) {
-			  	console.log("finished loop")
-					clearInterval(interval);
-					return 
-				}
-			count++;
-			}, moveInterval)
-	
-			// sleep for distance
-			console.log("sleeping")
-		
-			this.stop();
-		  console.log("finished moving")
+
+		  var sphero = this.devices.sphero;
+      var my = this;
+
+      var count = 0;
+
+      interval = setInterval(function() {
+        sphero.roll(speed, heading);
+        if (count >= distance * 1000) {
+          console.log("finished loop")
+          clearInterval(interval);
+          return 
+        }
+        count++;
+      }, moveInterval)
+
+      // sleep for distance
+      console.log("sleeping")
+      after((distance).seconds(), function() {
+          my.stop();
+          console.log("finished moving")
+      });
 	  },
 	
 		stop: function() {
@@ -74,9 +85,9 @@ module.exports = {
 			speed = speed;
 		},
 	
-		heading: function(heading) {
-			console.log("Setting heading to", heading)
-			heading = heading
+		heading: function(angle) {
+			console.log("Setting heading to", angle)
+			heading = angle
 		}
 	})
 }

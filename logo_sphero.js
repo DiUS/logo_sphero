@@ -1,10 +1,12 @@
-var Sphero = require('./robots')
+var robots = require('./robots')
+var cylon = require('cylon');
+var Sphero = robots.sphero;
 
 // for convenient jsdom/Node.js usage:
 if (process.argv.length <= 2)
   console.log("please enter the filename for the robot instructions");
 
-var fs = require('fs');
+var fs = require('fs')
 var filename = process.argv[2];
 var instructionString, instructions;
 
@@ -70,4 +72,5 @@ function printLine() {
   console.log('finished');
 }
 
-readFile(printLine);
+Sphero.setWorker(function() {readFile(printLine)});
+Sphero.start();
