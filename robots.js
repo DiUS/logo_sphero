@@ -57,23 +57,13 @@ module.exports = {
 
       var count = 0;
       
-      after((distance).seconds(),function() {
-        console.log("stopped after " + distance + " seconds...");
-        my.stop();
-      });
-
-      interval = setInterval(function() {
+      while (count < distance * 1000)
+      {  
         sphero.roll(speed, heading);
-        if (count >= distance * 1000) {
-          
-          console.log("finished loop")
-          my.stop();
-          clearInterval(interval);
-          return 
-        }
+        console.log("finished loop")
         count += moveInterval;
-        console.log(count + ": " + distance*1000);
-      }, moveInterval)
+      }
+      my.stop();
 
 	  },
 	
