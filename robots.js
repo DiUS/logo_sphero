@@ -3,7 +3,7 @@ var api = cylon.api('http');
 var interval;
 var speed = 50;
 var heading = 0;
-var moveInterval = 500;
+var moveInterval = 1;
 var spheroCommander = function() { console.log("please replace me, I am a default function") };
 
 module.exports = {
@@ -14,7 +14,6 @@ module.exports = {
 	
 	sphero: cylon.robot({
 		name: "sphero",
-		speed: 50,
 
 	  connections: {
 	    sphero: { adaptor: 'sphero', port: '/dev/tty.Sphero-GBO-AMP-SPP' }
@@ -54,13 +53,13 @@ module.exports = {
 
 		  var sphero = this.devices.sphero;
       var my = this;
-
       var count = 0;
       
       while (count < distance * 1000)
       {  
-        sphero.roll(speed, heading);
-        console.log("finished loop")
+        if (count % 10 == 0)
+          sphero.roll(speed, heading);
+        
         count += moveInterval;
       }
       my.stop();
@@ -79,7 +78,11 @@ module.exports = {
 	
 		heading: function(angle) {
 			console.log("Setting heading to", angle)
-			heading = angle
+      
+      if (angle < 0)
+          angle = 360 - angle;
+
+			heading = angle;
 		}
 	})
 }
