@@ -1,2 +1,4 @@
 SPEED 50
-FD 3
+FD 1
+RT 90
+FD 1

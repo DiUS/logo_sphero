@@ -3,7 +3,7 @@ var api = cylon.api('http');
 var interval;
 var speed = 50;
 var heading = 0;
-var moveInterval = 1;
+var moveInterval = 500;
 var spheroCommander = function() { console.log("please replace me, I am a default function") };
 
 module.exports = {
@@ -56,23 +56,25 @@ module.exports = {
       var my = this;
 
       var count = 0;
+      
+      after((distance).seconds(),function() {
+        console.log("stopped after " + distance + " seconds...");
+        my.stop();
+      });
 
       interval = setInterval(function() {
         sphero.roll(speed, heading);
         if (count >= distance * 1000) {
+          
           console.log("finished loop")
+          my.stop();
           clearInterval(interval);
           return 
         }
-        count++;
+        count += moveInterval;
+        console.log(count + ": " + distance*1000);
       }, moveInterval)
 
-      // sleep for distance
-      console.log("sleeping")
-      after((distance).seconds(), function() {
-          my.stop();
-          console.log("finished moving")
-      });
 	  },
 	
 		stop: function() {
