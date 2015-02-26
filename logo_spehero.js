@@ -1,3 +1,5 @@
+var Sphero = require('./robots')
+
 // for convenient jsdom/Node.js usage:
 if (process.argv.length <= 2)
   console.log("please enter the filename for the robot instructions");
@@ -6,25 +8,34 @@ var fs = require('fs');
 var filename = process.argv[2];
 var instructionString, instructions;
 
-var Robot = { };
-Robot.FD = function(seconds) {
+// heading (angle)
+// distance (time, seconds)
+// move(distance)
+
+var RobotCommands = { };
+RobotCommands.FD = function(seconds) {
   console.log("FD @ " + seconds);
+  Sphero.move(seconds)
 }
 
-Robot.BK = function(seconds) {
+RobotCommands.BK = function(seconds) {
   console.log("BK @ " + seconds);
+  Sphero.move(seconds);
 }
 
-Robot.LT = function(angle) {
+RobotCommands.LT = function(angle) {
   console.log("LT @ " + angle);
+  Sphero.heading(angle);
 }
 
-Robot.RT = function(angle) {
+RobotCommands.RT = function(angle) {
   console.log("RT @ " + angle);
+  Sphero.heading(angle);
 }
 
-Robot.SPEED = function(speed) {
+RobotCommands.SPEED = function(speed) {
   console.log("SPEED @ " + speed);
+  Sphero.speed(speed);
 }
 
 function checkValidCommand(command) {
@@ -44,7 +55,7 @@ function readFile(callback) {
 
       if ( checkValidCommand(command) )
       {
-        Robot[command](arg);  
+        RobotCommands[command](arg);  
       }
 
       else
