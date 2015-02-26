@@ -2,6 +2,7 @@ var robots = require('./robots')
 var cylon = require('cylon');
 var Sphero = robots.sphero;
 var timer = 0;
+var angle = 0;
 
 // for convenient jsdom/Node.js usage:
 if (process.argv.length <= 2)
@@ -17,33 +18,21 @@ var instructionString, instructions;
 
 var RobotCommands = { };
 RobotCommands.FD = function(seconds) {
-  setTimeout(function(){
-    console.log("FD @ " + seconds);
     Sphero.move(seconds);
-    timer += seconds;
-  }, timer);
 }
 
 RobotCommands.BK = function(seconds) {
-  setTimeout(function(){
-    console.log("BK @ " + seconds);
     Sphero.move(seconds);
-    timer += seconds;
-  }, timer);
 }
 
-RobotCommands.LT = function(angle) {
-  setTimeout(function(){
-  console.log("LT @ " + angle);
+RobotCommands.LT = function(turn) {
+    angle -= parseInt(turn);
     Sphero.heading(angle);
-  }, timer);
 }
 
-RobotCommands.RT = function(angle) {
-  setTimeout(function(){
-  console.log("RT @ " + angle);
-    Sphero.heading(angle);
-  }, timer);
+RobotCommands.RT = function(turn) {
+  angle += parseInt(turn);  
+  Sphero.heading(angle);
 }
 
 RobotCommands.SPEED = function(speed) {
