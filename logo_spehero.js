@@ -23,6 +23,7 @@ function readFile(callback) {
   fs.readFile(filename, function (err, data) {
     instructionString = data.toString(); 
     instructions = instructionString.split('\n');
+    instructions.pop();
     instructions.forEach(function(order) {
       
       var commands = order.split(" ");
